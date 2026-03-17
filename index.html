@@ -2,20 +2,19 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>張芷瑜的數位名片</title>
     <style>
         :root {
             --bg-color: #0B1D3A; 
             --btn-color: #FDE68A; 
-            --btn-hover: #FCD34D;
             --text-main: #FFFFFF;
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             display: flex;
@@ -24,36 +23,37 @@
             align-items: center;
             min-height: 100vh;
             text-align: center;
-            transition: background-color 0.6s ease; 
-            overflow-x: hidden;
+            transition: background-color 0.6s ease;
+            /* 防止手機端長按背景出現奇怪選單 */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .card {
-            padding: 40px 20px;
-            max-width: 400px;
-            width: 90%;
+            padding: 20px;
+            max-width: 350px;
+            width: 85%;
             z-index: 10;
         }
 
-        /* 修正後的頭像容器：保證永遠是圓的 */
-        .avatar-container {
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 20px auto;
-            position: relative;
+        /* 絕對鎖死的大頭貼容器 */
+        .avatar-box {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px auto;
             border-radius: 50%;
-            /* 這是關鍵：強制內容超出部分隱藏，保證放大也是圓的 */
-            overflow: hidden; 
+            overflow: hidden; /* 確保內容永遠是圓的 */
             border: 4px solid var(--btn-color);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
             transition: transform 0.3s ease;
-            touch-action: none; /* 防止手機長按時觸發系統選單 */
+            z-index: 100;
         }
 
-        /* 放大效果：只縮放容器本身 */
-        .avatar-container:hover, .avatar-container:active {
-            transform: scale(1.5);
-            z-index: 100;
+        /* 放大效果：只縮放容器，不影響版面 */
+        .avatar-box:active, .avatar-box:hover {
+            transform: scale(1.3);
         }
 
         .profile-img {
@@ -61,8 +61,8 @@
             height: 100%;
             object-fit: cover;
             object-position: top;
-            cursor: pointer;
             display: block;
+            pointer-events: none; /* 讓圖片本身不接收長按事件，防止儲存 */
         }
 
         @keyframes rotate-vinyl {
@@ -75,45 +75,41 @@
         }
 
         h1 {
-            font-size: 2.2rem;
-            margin: 0 0 5px 0;
-            font-weight: 800;
+            font-size: 1.8rem;
+            margin: 0 0 8px 0;
+            letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            margin: 0 0 30px 0;
+            font-size: 1rem;
+            margin-bottom: 30px;
             color: var(--btn-color);
-            line-height: 1.5;
+            opacity: 0.9;
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .btn {
             display: block;
-            padding: 15px;
+            padding: 14px;
             background-color: var(--btn-color);
             color: #0B1D3A; 
             text-decoration: none;
-            border-radius: 30px;
-            font-weight: 700;
-            transition: 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--btn-hover);
-            transform: translateY(-3px);
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .instruction {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
             margin-top: 30px;
-            line-height: 1.6;
         }
     </style>
 </head>
@@ -122,7 +118,7 @@
     <audio id="bgMusic" src="https://raw.githubusercontent.com/chang11yu/my-website-assets/main/music.mp3" loop></audio>
 
     <div class="card">
-        <div class="avatar-container" id="avatarTrigger">
+        <div class="avatar-box" id="musicToggle">
             <img src="https://raw.githubusercontent.com/chang11yu/my-website-assets/main/image.jpg" alt="張芷瑜" class="profile-img" id="profileImg">
         </div>
         
@@ -132,34 +128,33 @@
         <div class="links">
             <a href="https://www.instagram.com/_.chang._yu?igsh=MW5nZ2pxNnMwOG9vYw%3D%3D&utm_source=qr" target="_blank" class="btn">Instagram</a>
             <a href="https://www.threads.com/@_.chang._yu?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="btn">Threads</a>
-            <a href="https://github.com/CJZhiY" target="_blank" class="btn">GitHub</a>
-            <a href="https://youtu.be/ja6Rc5YL8vg?si=EhlvTYcE0uVArK81" target="_blank" class="btn">🎧 原曲播放：Ms. potato</a>
+            <a href="https://github.com/chang11yu" target="_blank" class="btn">GitHub</a>
+            <a href="https://youtu.be/ja6Rc5YL8vg?si=EhlvTYcE0uVArK81" target="_blank" class="btn">🎧 原曲：Ms. potato</a>
         </div>
 
         <div class="instruction">
-            💡 點擊背景切換顏色<br>
-            💿 點擊照片播放音樂<br>
-            🔍 長按照片放大檢視
+            💡 點擊背景換色 / 點照片播音樂<br>
+            🔍 長按或滑鼠懸停照片可放大
         </div>
     </div>
 
     <script>
-        // 背景換色
+        // 背景隨機換色
         const colors = ['#0B1D3A', '#1E3A8A', '#020617', '#0F766E', '#4C1D95'];
         document.body.addEventListener('click', (e) => {
-            if (e.target.closest('.btn') || e.target.id === 'profileImg') return;
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.style.backgroundColor = randomColor;
+            if (e.target.closest('.btn') || e.target.closest('.avatar-box')) return;
+            document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         });
 
         // 音樂與旋轉
+        const box = document.getElementById('musicToggle');
         const img = document.getElementById('profileImg');
         const music = document.getElementById('bgMusic');
 
-        img.addEventListener('click', (e) => {
+        box.addEventListener('click', (e) => {
             e.stopPropagation();
             if (music.paused) {
-                music.play();
+                music.play().catch(err => console.log("需點擊後播放"));
                 img.classList.add('spin');
             } else {
                 music.pause();
