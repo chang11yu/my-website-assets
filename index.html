@@ -25,7 +25,7 @@
             min-height: 100vh;
             text-align: center;
             transition: background-color 0.6s ease; 
-            cursor: pointer;
+            overflow-x: hidden;
         }
 
         .card {
@@ -33,47 +33,36 @@
             max-width: 400px;
             width: 90%;
             z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .avatar-wrapper {
+        /* 修正後的頭像容器：保證永遠是圓的 */
+        .avatar-container {
             width: 160px;
             height: 160px;
-            margin-bottom: 20px;
+            margin: 0 auto 20px auto;
+            position: relative;
             border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 30;
+            /* 這是關鍵：強制內容超出部分隱藏，保證放大也是圓的 */
+            overflow: hidden; 
+            border: 4px solid var(--btn-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+            touch-action: none; /* 防止手機長按時觸發系統選單 */
         }
 
-        /* 電腦版：滑鼠懸停放大 */
-        @media (hover: hover) {
-            .avatar-wrapper:hover {
-                transform: scale(1.5);
-                z-index: 50;
-            }
-        }
-
-        /* 手機版：手指長按放大 */
-        @media (hover: none) {
-            .avatar-wrapper:active {
-                transform: scale(1.5);
-                z-index: 50;
-            }
+        /* 放大效果：只縮放容器本身 */
+        .avatar-container:hover, .avatar-container:active {
+            transform: scale(1.5);
+            z-index: 100;
         }
 
         .profile-img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
             object-position: top;
-            border: 4px solid var(--btn-color);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
             cursor: pointer;
-            -webkit-touch-callout: none;
-            user-select: none; 
+            display: block;
         }
 
         @keyframes rotate-vinyl {
@@ -89,63 +78,52 @@
             font-size: 2.2rem;
             margin: 0 0 5px 0;
             font-weight: 800;
-            letter-spacing: 2px;
         }
 
         .subtitle {
-            font-size: 1.15rem;
-            line-height: 1.6;
-            margin: 0 0 35px 0;
+            font-size: 1.1rem;
+            margin: 0 0 30px 0;
             color: var(--btn-color);
-            font-weight: 500;
-            letter-spacing: 1px;
+            line-height: 1.5;
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            gap: 18px;
-            width: 100%;
+            gap: 15px;
         }
 
         .btn {
             display: block;
-            padding: 16px 24px;
+            padding: 15px;
             background-color: var(--btn-color);
             color: #0B1D3A; 
             text-decoration: none;
             border-radius: 30px;
-            font-size: 1.05rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-            position: relative;
-            z-index: 20;
-            box-shadow: 0 4px 12px rgba(253, 230, 138, 0.2);
+            transition: 0.2s;
         }
 
         .btn:hover {
             background-color: var(--btn-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(253, 230, 138, 0.4);
+            transform: translateY(-3px);
         }
 
         .instruction {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 35px;
-            line-height: 1.8;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 30px;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" src="https://raw.githubusercontent.com/chang11yu/my-website-assets/6530d2e24f8da251d9798e94ee5a5a1bac1301ee/music.mp3" loop></audio>
+    <audio id="bgMusic" src="https://raw.githubusercontent.com/chang11yu/my-website-assets/main/music.mp3" loop></audio>
 
     <div class="card">
-        <div class="avatar-wrapper" id="avatarWrapper">
-            <img src="https://raw.githubusercontent.com/chang11yu/my-website-assets/6530d2e24f8da251d9798e94ee5a5a1bac1301ee/image.jpg" alt="張芷瑜" class="profile-img" id="profileImg">
+        <div class="avatar-container" id="avatarTrigger">
+            <img src="https://raw.githubusercontent.com/chang11yu/my-website-assets/main/image.jpg" alt="張芷瑜" class="profile-img" id="profileImg">
         </div>
         
         <h1>張芷瑜</h1>
@@ -154,44 +132,38 @@
         <div class="links">
             <a href="https://www.instagram.com/_.chang._yu?igsh=MW5nZ2pxNnMwOG9vYw%3D%3D&utm_source=qr" target="_blank" class="btn">Instagram</a>
             <a href="https://www.threads.com/@_.chang._yu?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="btn">Threads</a>
-            <a href="https://github.com/chang11yu" target="_blank" class="btn">GitHub</a>
+            <a href="https://github.com/CJZhiY" target="_blank" class="btn">GitHub</a>
             <a href="https://youtu.be/ja6Rc5YL8vg?si=EhlvTYcE0uVArK81" target="_blank" class="btn">🎧 原曲播放：Ms. potato</a>
         </div>
 
         <div class="instruction">
-            💡 點擊背景可切換顏色<br>
-            💿 點擊照片播放專屬音樂<br>
-            🔍 電腦游標懸停 / 手機長按照片可放大
+            💡 點擊背景切換顏色<br>
+            💿 點擊照片播放音樂<br>
+            🔍 長按照片放大檢視
         </div>
     </div>
 
     <script>
-        const darkNavyShades = ['#0B1D3A', '#1E3A8A', '#020617', '#0F766E', '#4C1D95'];
-
-        document.body.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn') || e.target.id === 'profileImg') return;
-
-            let randomColor = darkNavyShades[Math.floor(Math.random() * darkNavyShades.length)];
-            if(document.body.style.backgroundColor === randomColor) {
-                 const nextIndex = (darkNavyShades.indexOf(randomColor) + 1) % darkNavyShades.length;
-                 document.body.style.backgroundColor = darkNavyShades[nextIndex];
-            } else {
-                 document.body.style.backgroundColor = randomColor;
-            }
+        // 背景換色
+        const colors = ['#0B1D3A', '#1E3A8A', '#020617', '#0F766E', '#4C1D95'];
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('.btn') || e.target.id === 'profileImg') return;
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundColor = randomColor;
         });
 
-        const profileImg = document.getElementById('profileImg');
-        const bgMusic = document.getElementById('bgMusic');
+        // 音樂與旋轉
+        const img = document.getElementById('profileImg');
+        const music = document.getElementById('bgMusic');
 
-        profileImg.addEventListener('click', function(e) {
-            e.stopPropagation(); 
-            
-            if (bgMusic.paused) {
-                bgMusic.play();
-                profileImg.classList.add('spin');
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (music.paused) {
+                music.play();
+                img.classList.add('spin');
             } else {
-                bgMusic.pause();
-                profileImg.classList.remove('spin');
+                music.pause();
+                img.classList.remove('spin');
             }
         });
     </script>
