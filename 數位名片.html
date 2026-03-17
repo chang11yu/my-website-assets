@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>張芷瑜的數位名片</title>
+    <style>
+        :root {
+            --bg-color: #0B1D3A; 
+            --btn-color: #FDE68A; 
+            --btn-hover: #FCD34D;
+            --text-main: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            transition: background-color 0.6s ease; 
+            cursor: pointer;
+        }
+
+        .card {
+            padding: 40px 20px;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar-wrapper {
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 30;
+        }
+
+        /* 電腦版：滑鼠懸停放大 */
+        @media (hover: hover) {
+            .avatar-wrapper:hover {
+                transform: scale(1.5);
+                z-index: 50;
+            }
+        }
+
+        /* 手機版：手指長按放大 */
+        @media (hover: none) {
+            .avatar-wrapper:active {
+                transform: scale(1.5);
+                z-index: 50;
+            }
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            border: 4px solid var(--btn-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            -webkit-touch-callout: none; /* 防止手機長按跳出存圖選單 */
+            user-select: none; 
+        }
+
+        @keyframes rotate-vinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: rotate-vinyl 5s linear infinite;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin: 0 0 35px 0;
+            color: var(--btn-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .btn {
+            display: block;
+            padding: 16px 24px;
+            background-color: var(--btn-color);
+            color: #0B1D3A; 
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(253, 230, 138, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(253, 230, 138, 0.4);
+        }
+
+        .instruction {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 35px;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="https://raw.githubusercontent.com/chang11yu/my-website-assets/6530d2e24f8da251d9798e94ee5a5a1bac1301ee/music.mp3" loop></audio>
+
+    <div class="card">
+        <div class="avatar-wrapper" id="avatarWrapper">
+            <img src="https://raw.githubusercontent.com/chang11yu/my-website-assets/6530d2e24f8da251d9798e94ee5a5a1bac1301ee/image.jpg" alt="張芷瑜" class="profile-img" id="profileImg">
+        </div>
+        
+        <h1>張芷瑜</h1>
+        <div class="subtitle">熱愛音樂與攝影的<br>嘉義大學學生</div>
+
+        <div class="links">
+            <a href="https://www.instagram.com/_.chang._yu?igsh=MW5nZ2pxNnMwOG9vYw%3D%3D&utm_source=qr" target="_blank" class="btn">Instagram</a>
+            <a href="https://www.threads.com/@_.chang._yu?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="btn">Threads</a>
+            <a href="https://github.com/CJZhiY" target="_blank" class="btn">GitHub</a>
+            <a href="https://youtu.be/ja6Rc5YL8vg?si=EhlvTYcE0uVArK81" target="_blank" class="btn">🎧 原曲播放：Ms. potato</a>
+        </div>
+
+        <div class="instruction">
+            💡 點擊背景可切換顏色<br>
+            💿 點擊照片播放專屬音樂<br>
+            🔍 電腦游標懸停 / 手機長按照片可放大
+        </div>
+    </div>
+
+    <script>
+        const darkNavyShades = ['#0B1D3A', '#1E3A8A', '#020617', '#0F766E', '#4C1D95'];
+
+        document.body.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn') || e.target.id === 'profileImg') return;
+
+            let randomColor = darkNavyShades[Math.floor(Math.random() * darkNavyShades.length)];
+            if(document.body.style.backgroundColor === randomColor) {
+                 const nextIndex = (darkNavyShades.indexOf(randomColor) + 1) % darkNavyShades.length;
+                 document.body.style.backgroundColor = darkNavyShades[nextIndex];
+            } else {
+                 document.body.style.backgroundColor = randomColor;
+            }
+        });
+
+        const profileImg = document.getElementById('profileImg');
+        const bgMusic = document.getElementById('bgMusic');
+
+        profileImg.addEventListener('click', function(e) {
+            e.stopPropagation(); 
+            
+            if (bgMusic.paused) {
+                bgMusic.play();
+                profileImg.classList.add('spin');
+            } else {
+                bgMusic.pause();
+                profileImg.classList.remove('spin');
+            }
+        });
+    </script>
+</body>
+</html>
